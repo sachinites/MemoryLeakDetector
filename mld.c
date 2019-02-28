@@ -36,8 +36,8 @@
 #include "css.h"
 
 char *DATA_TYPE[] = {"UINT8", "UINT32", "INT32",
-    "CHAR", "OBJ_PTR", "FLOAT",
-    "DOUBLE", "OBJ_STRUCT"};
+                     "CHAR", "OBJ_PTR", "FLOAT",
+                     "DOUBLE", "OBJ_STRUCT"};
 
 /* Dumping Function */
 
