@@ -69,7 +69,7 @@ print_structure_db(struct_db_t *struct_db){
     struct_rec = struct_db->head;
     printf("No of Structures Registered = %d\n", struct_db->count);
     while(struct_rec){
-        printf("structure No : %d (%p)\n", i, struct_rec);
+        printf("structure No : %d (%p)\n", i++, struct_rec);
         print_structure_rec(struct_rec);
         struct_rec = struct_rec->next;
     }
@@ -81,7 +81,6 @@ add_structure_to_struct_db(struct_db_t *struct_db,
 
     struct_db_rec_t *head = struct_db->head;
 
-    /*Add first structure into structure DB*/
     if(!head){
         struct_db->head = struct_rec;
         struct_rec->next = NULL;
@@ -89,6 +88,8 @@ add_structure_to_struct_db(struct_db_t *struct_db,
         return 0;
     }
 
-    /*Rest of the cases, Implement yourself*/
+    struct_rec->next = head;
+    struct_db->head = struct_rec;
+    struct_db->count++;
     return 0;
 }

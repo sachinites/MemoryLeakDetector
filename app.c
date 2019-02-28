@@ -45,6 +45,14 @@ typedef struct emp_ {
     float salary;
 } emp_t;
 
+typedef struct student_{
+
+    char stud_name[32];
+    unsigned int rollno;
+    unsigned int age;
+    float aggregate;
+    struct student_ *best_colleage;
+} student_t;
 
 int
 main(int argc, char **argv){
@@ -61,6 +69,15 @@ main(int argc, char **argv){
         FIELD_INFO(emp_t, salary,   FLOAT, 0)
     };
     REG_STRUCT(struct_db, emp_t, emp_fields);
+
+    static field_info_t stud_fiels[] = {
+        FIELD_INFO(student_t, stud_name, CHAR, 0),
+        FIELD_INFO(student_t, rollno,    UINT32, 0),
+        FIELD_INFO(student_t, age,       UINT32, 0),
+        FIELD_INFO(student_t, aggregate, FLOAT, 0),
+        FIELD_INFO(student_t, best_colleage, OBJ_PTR, student_t)
+    };
+    REG_STRUCT(struct_db, student_t, stud_fiels);
 
     print_structure_db(struct_db);
     return 0;
