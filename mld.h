@@ -163,4 +163,7 @@ print_object_db(object_db_t *object_db);
 void*
 xcalloc(object_db_t *object_db, char *struct_name, int units);
 
+void
+mld_register_root_object(void *ptr);
+
 #endif /* __MLD__ */

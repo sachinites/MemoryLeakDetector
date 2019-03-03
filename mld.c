@@ -34,6 +34,7 @@
 #include <stdlib.h>
 #include "mld.h"
 #include "css.h"
+#include <assert.h>
 
 char *DATA_TYPE[] = {"UINT8", "UINT32", "INT32",
                      "CHAR", "OBJ_PTR", "FLOAT",
@@ -190,3 +191,18 @@ print_object_db(object_db_t *object_db){
     }
 }
 
+#define ROOT_OBJ_ARRAY_MAX_SIZE 5
+static void *root_obj_array[ROOT_OBJ_ARRAY_MAX_SIZE];
+
+void
+mld_register_root_object(void *ptr){
+
+    int i = 0;
+    for(; i < ROOT_OBJ_ARRAY_MAX_SIZE; i++){
+        if(root_obj_array[i])
+            continue;
+        root_obj_array[i] = ptr;
+        return;
+    }
+    assert(0);
+}
