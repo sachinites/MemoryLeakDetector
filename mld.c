@@ -168,7 +168,7 @@ xcalloc(object_db_t *object_db,
     struct_db_rec_t *struct_rec = struct_db_look_up(object_db->struct_db, struct_name);
     assert(struct_rec);
     void *ptr = calloc(units, struct_rec->ds_size);
-    add_object_to_object_db(object_db, ptr, units, struct_rec, MLD_FALSE);  /*xcalloc by default set following flags on object record*/
+    add_object_to_object_db(object_db, ptr, units, struct_rec, MLD_FALSE);  /*xcalloc by default set the object as non-root*/
     return ptr;
 }
 
@@ -219,7 +219,6 @@ mld_set_dynamic_object_as_root(object_db_t *object_db, void *obj_ptr){
     object_db_rec_t *obj_rec = object_db_look_up(object_db, obj_ptr);
     assert(obj_rec);
     
-    obj_rec->is_visited = MLD_TRUE;
     obj_rec->is_root = MLD_TRUE;
 }
 
