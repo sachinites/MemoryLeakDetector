@@ -32,6 +32,7 @@
 
 #ifndef __MLD__
 #include <assert.h>
+#include <string.h>
 
 /*Structure Data base Definition Begin*/
 
@@ -45,6 +46,7 @@ typedef enum {
     INT32,
     CHAR,
     OBJ_PTR,
+    VOID_PTR, /*New Data type added to identify void * pointers*/
     FLOAT,
     DOUBLE,
     OBJ_STRUCT

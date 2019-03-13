@@ -38,7 +38,7 @@
 #include <memory.h>
 
 char *DATA_TYPE[] = {"UINT8", "UINT32", "INT32",
-                     "CHAR", "OBJ_PTR", "FLOAT",
+                     "CHAR", "OBJ_PTR", "VOID_PTR", "FLOAT",
                      "DOUBLE", "OBJ_STRUCT"};
 
 /* Dumping Function */
@@ -172,6 +172,51 @@ xcalloc(object_db_t *object_db,
     return ptr;
 }
 
+static void
+delete_object_record_from_object_db(object_db_t *object_db, 
+                                    object_db_rec_t *object_rec){
+
+    assert(object_rec);
+
+    object_db_rec_t *head = object_db->head;
+    if(head == object_rec){
+        object_db->head = object_rec->next;
+        free(object_rec);
+        return;
+    }
+    
+    object_db_rec_t *prev = head;
+    head = head->next;
+
+    while(head){
+        if(head != object_rec){
+            prev = head;
+            head = head->next;
+            continue;
+        }
+
+        prev->next = head->next;
+        head->next = NULL;
+        free(head);
+        return;
+    }
+}
+
+
+void
+xfree(object_db_t *object_db, void *ptr){
+
+    if(!ptr) return;
+    object_db_rec_t *object_rec = 
+        object_db_look_up(object_db, ptr);
+        
+    assert(object_rec);
+    assert(object_rec->ptr);
+    free(object_rec->ptr);
+    object_rec->ptr = NULL;
+    /*Delete object record from object db*/
+    delete_object_record_from_object_db(object_db, object_rec);
+}
 
 /*Dumping Functions for Object database*/
 void 
@@ -261,6 +306,12 @@ mld_explore_objects_recursively(object_db_t *object_db,
     object_db_rec_t *child_object_rec = NULL;
     struct_db_rec_t *parent_struct_rec = parent_obj_rec->struct_rec;
 
+    if(!parent_struct_rec){
+        /* Handling void pointers : We cannot explore fields of objects which are of type void * in application.
+         * Such objects will not have structure records, hence, nothing to do here*/
+        return;
+    }
+
     /*Parent object must have already visited*/
     assert(parent_obj_rec->is_visited);
 
@@ -283,6 +334,7 @@ mld_explore_objects_recursively(object_db_t *object_db,
                 case DOUBLE:
                 case OBJ_STRUCT:
                     break;
+                case VOID_PTR:
                 case OBJ_PTR:
                 default:
                     ;
@@ -317,7 +369,6 @@ mld_explore_objects_recursively(object_db_t *object_db,
 
 /* Level 1 Pseudocode : We will traverse the graph starting from root objects
  * and mark all reachable nodes as visited*/
-
 void
 run_mld_algorithm(object_db_t *object_db){
 
