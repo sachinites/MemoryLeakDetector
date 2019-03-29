@@ -306,12 +306,6 @@ mld_explore_objects_recursively(object_db_t *object_db,
     object_db_rec_t *child_object_rec = NULL;
     struct_db_rec_t *parent_struct_rec = parent_obj_rec->struct_rec;
 
-    if(!parent_struct_rec){
-        /* Handling void pointers : We cannot explore fields of objects which are of type void * in application.
-         * Such objects will not have structure records, hence, nothing to do here*/
-        return;
-    }
-
     /*Parent object must have already visited*/
     assert(parent_obj_rec->is_visited);
 
@@ -361,7 +355,8 @@ mld_explore_objects_recursively(object_db_t *object_db,
                  * If this child object is already visited, then do nothing - avoid infinite loops*/
                 if(!child_object_rec->is_visited){
                     child_object_rec->is_visited = MLD_TRUE;
-                    mld_explore_objects_recursively(object_db, child_object_rec);
+                    if(field_info->dtype != VOID_PTR) /*Explore next object only when it is not a VOID_PTR*/
+                        mld_explore_objects_recursively(object_db, child_object_rec);
                 }
                 else{
                     continue; /*Do nothing, explore next child object*/
