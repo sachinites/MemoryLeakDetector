@@ -43,6 +43,7 @@ typedef struct emp_ {
     unsigned int age;
     struct emp_ *mgr;
     float salary;
+    int *p;
 } emp_t;
 
 typedef struct student_{
@@ -59,7 +60,8 @@ main(int argc, char **argv){
 
     /*Step 1 : Initialize a new structure database */
     struct_db_t *struct_db = calloc(1, sizeof(struct_db_t));
-    
+    mld_init_primitive_data_types_support(struct_db);
+        
     /*Step 2 : Create structure record for structure emp_t*/
     static field_info_t emp_fields[] = {
         FIELD_INFO(emp_t, emp_name, CHAR,    0),
@@ -100,6 +102,9 @@ main(int argc, char **argv){
     //abhishek->best_colleage = shivani;
 
     emp_t *joseph = xcalloc(object_db, "emp_t", 2);
+    mld_set_dynamic_object_as_root(object_db, joseph);
+    joseph->p = xcalloc(object_db, "int", 1);
+
     print_object_db(object_db);
 
     run_mld_algorithm(object_db);
