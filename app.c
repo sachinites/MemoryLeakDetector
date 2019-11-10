@@ -68,7 +68,8 @@ main(int argc, char **argv){
         FIELD_INFO(emp_t, emp_id,   UINT32,  0),
         FIELD_INFO(emp_t, age,      UINT32,  0),
         FIELD_INFO(emp_t, mgr,      OBJ_PTR, emp_t),
-        FIELD_INFO(emp_t, salary,   FLOAT, 0)
+        FIELD_INFO(emp_t, salary,   FLOAT, 0),
+        FIELD_INFO(emp_t, p, OBJ_PTR, 0)
     };
     /*Step 3 : Register the structure in structure database*/
     REG_STRUCT(struct_db, emp_t, emp_fields);
