@@ -61,7 +61,7 @@ typedef enum{
 
 
 #define OFFSETOF(struct_name, fld_name)     \
-    (unsigned int)&(((struct_name *)0)->fld_name)
+    (unsigned long)&(((struct_name *)0)->fld_name)
 
 #define FIELD_SIZE(struct_name, fld_name)   \
     sizeof(((struct_name *)0)->fld_name)
@@ -189,5 +189,11 @@ run_mld_algorithm(object_db_t *object_db);
 
 void
 report_leaked_objects(object_db_t *object_db);
+
+void
+mld_set_dynamic_object_as_root(object_db_t *object_db, void *obj_ptr);
+
+void 
+mld_init_primitive_data_types_support(struct_db_t *struct_db);
 
 #endif /* __MLD__ */

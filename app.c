@@ -33,6 +33,7 @@
 #include "mld.h"
 #include <memory.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 /*Application Structures*/
 
@@ -109,6 +110,7 @@ main(int argc, char **argv){
     print_object_db(object_db);
 
     run_mld_algorithm(object_db);
+    printf("Leaked Objects : \n");
     report_leaked_objects(object_db);
 
     return 0;
